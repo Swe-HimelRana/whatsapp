@@ -27,22 +27,53 @@ This application is an independent project and is not affiliated with or endorse
 
 Simplify your messaging and stay connected effortlessly. Download the app now and bring WhatsApp to your Linux desktop!
 
+# Changelog
+## [1.2.0] - 2024-4-30
+- Big update
+- Updated Rendering Engine from Chrome version: 121 to 124
+- In app notification added
+- Added new fetures in (context menu)
+    - now you can cut, undo, redo, reload, zoom in-out, reset zoom, toggle fullscreen
+- Now this package also availble for native debian package
+    - you can install using apt command
+    - check https://mirror.himelrana.com
+    - If you install from apt mirror your app loading will be more faster
+
+## [1.1.0] - 2024-02-25
+- Added a new feature (context menu)
+    - Now you can copy, past, select, copy link
+## [1.0.0] - 2024-01-19
+- Initial release
 
 ## Installation
 
-```shell script
+```bash
     sudo snap install whatsapp-linux-app
+```
+## using native debian apt command
+
+```bash
+    # Add mirror.himelrana.com in your system
+    sudo apt install curl
+    sudo curl -fsSLo /usr/share/keyrings/himel.gpg https://mirror.himelrana.com/himel.gpg
+    echo "deb [signed-by=/usr/share/keyrings/himel.gpg] https://mirror.himelrana.com/ stable main"|sudo tee /etc/apt/sources.list.d/himel-release.list
+    sudo apt update
+```
+
+```bash
+    sudo apt install whatsapp-linux-app
 ```
 
 Visit [Snapcraft Store](https://snapcraft.io/icloud-mail) and click **Install**.
+Visit [Apt Mirror](https://mirror.himelrana.com)  and install using debian native **apt** command
 
 ## Build
 
 ### Development
 
 ``` shell script
-node version: v18.19.0
-electron version: ^28.1.4
+node version: v20.12.2
+electron version: ^30.0.1
 
 ```
 

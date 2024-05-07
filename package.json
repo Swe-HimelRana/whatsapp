@@ -1,6 +1,6 @@
 {
   "name": "whatsapp-linux-app",
-  "version": "1.0.0",
+  "version": "1.2.0",
   "description": "An Unofficial desktop app for Whatsapp",
   "main": "main.js",
   "homepage": "https://apps.himelrana.com/whatsapp",
@@ -57,10 +57,11 @@
     "email": "dev@himelrana.com"
   },
   "license": "ISC",
-  "devDependencies": {
-    "electron": "^28.1.4"
-  },
   "dependencies": {
     "electron-context-menu": "^3.6.1"
+  },
+  "devDependencies": {
+    "electron": "^30.0.1",
+    "electron-builder": "^24.13.3"
   }
 }

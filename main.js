@@ -1,4 +1,4 @@
-const { app, BrowserWindow, ipcMain, shell } = require('electron');
+const { app, BrowserWindow, ipcMain, shell, ipcRenderer } = require('electron');
 const path = require('path');
 const contextMenu = require('electron-context-menu');
 
@@ -19,7 +19,7 @@ function createWindow() {
     },
   });
 
-  mainWindow.loadURL('https://web.whatsapp.com/', {userAgent: 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36'});
+  mainWindow.loadURL('https://web.whatsapp.com', {userAgent: 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36'});
 
   mainWindow.on('closed', function () {
     mainWindow = null;
@@ -44,9 +44,9 @@ function setupExternalLinkHandling() {
 }
 
 function isExternalLink(url) {
-  // Check if the URL is from iCloud.com or its subdomains
-  const icloudDomains = ['icloud.com', 'apple.com', /* Add more if needed */];
-  return !icloudDomains.some(domain => url.includes(domain));
+  // Check if the URL is from web.whatsapp.com or its subdomains
+  const whatsappDomains = ['whatsapp.com', 'web.whatsapp.com', /* Add more if needed */];
+  return !whatsappDomains.some(domain => url.includes(domain));
 }
 
 function checkNotificationPermission() {
@@ -56,8 +56,8 @@ function checkNotificationPermission() {
 function sendNotification() {
   // Send an IPC message to show a notification
   mainWindow.webContents.send('show-notification', {
-    title: 'Electron Notification',
-    body: 'This is a sample notification from Electron!',
+    title: 'Whatsapp Notification',
+    body: 'Whatsapp notified you',
   });
 }
 
@@ -72,13 +72,49 @@ app.whenReady().then(() => {
         role: 'copy',
       },
       {
+        label: 'Cut',
+        role: 'cut'
+      },
+      {
         label: 'Paste',
         role: 'paste',
       },
+      { type: 'separator' },
+      {
+        label: 'Undo',
+        role: 'undo'
+      },
+      {
+        label: 'Redo',
+        role: 'redo'
+      },
+      { type: 'separator' },
+      {
+        label: 'Zoom In',
+        role: 'zoomIn'
+      },
+      {
+        label: 'Zoom Out',
+        role: 'zoomOut'
+      },
+      {
+        label: 'Reset Zoom',
+        role: 'resetZoom'
+      },
+      { type: 'separator' },
+      {
+        label: 'Reload',
+        role: 'forceReload'
+      },
+      {
+        label: 'Toggle Full Screen',
+        role: 'togglefullscreen'
+      }
     ],
   });
 })
 
+ 
 app.on('ready', createWindow);
 
 app.on('window-all-closed', function () {
