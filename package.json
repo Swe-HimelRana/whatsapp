@@ -43,7 +43,10 @@
         "browser-support",
         "network",
         "gsettings",
-        "opengl"
+        "opengl",
+        "audio-playback",
+        "audio-record",
+        "camera"
       ]
     },
     "deb": {
