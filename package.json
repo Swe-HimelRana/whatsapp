@@ -45,7 +45,8 @@
         "gsettings",
         "opengl",
         "audio-playback",
-        "audio-record"
+        "audio-record",
+        "camera"
       ]
     },
     "deb": {
