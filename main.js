@@ -35,10 +35,10 @@ function createWindow() {
 
 function setupExternalLinkHandling() {
   // Open external links in the default browser
-  mainWindow.webContents.on('will-navigate', (event, url) => {
+  mainWindow.webContents.setWindowOpenHandler(({ url }) => {
     if (isExternalLink(url)) {
-      event.preventDefault();
       shell.openExternal(url);
+      return { action: 'deny' };
     }
   });
 }
@@ -114,7 +114,7 @@ app.whenReady().then(() => {
   });
 })
 
- 
+
 app.on('ready', createWindow);
 
 app.on('window-all-closed', function () {
