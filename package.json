@@ -1,6 +1,6 @@
 {
   "name": "whatsapp-linux-app",
-  "version": "1.3.0",
+  "version": "1.3.1",
   "description": "An Unofficial desktop app for Whatsapp",
   "main": "main.js",
   "desktopName": "whatsapp-linux-app.desktop",
@@ -19,17 +19,21 @@
     },
     "files": [
       "main.js",
-      "package.json",
-      "icon.png"
+      "package.json"
     ],
     "linux": {
       "target": [
         "snap",
         "deb"
       ],
-      "icon": "./icon.png",
+      "icon": "./icons",
       "category": "Network;TextTools;Office;GTK;GNOME",
-      "syncDesktopName": true
+      "syncDesktopName": true,
+      "desktop": {
+        "entry": {
+          "Name": "WhatsApp"
+        }
+      }
     },
     "snap": {
       "confinement": "strict",
@@ -51,7 +55,7 @@
       ]
     },
     "deb": {
-      "icon": "./icon.png",
+      "icon": "./icons",
       "category": "Network;TextTools;Office;GTK;GNOME"
     }
   },
