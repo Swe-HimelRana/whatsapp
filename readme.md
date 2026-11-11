@@ -28,6 +28,26 @@ This application is an independent project and is not affiliated with or endorse
 Simplify your messaging and stay connected effortlessly. Download the app now and bring WhatsApp to your Linux desktop!
 
 # Changelog
+## [1.3.1] - 2026-11-11
+- Fixed the missing launcher icon (question mark) on the deb package
+    - icons are now installed in the standard hicolor sizes (16 to 256) instead of a single 360x360 file
+- Launcher entry is now named "WhatsApp"
+
+## [1.3.0] - 2026-11-11
+- Compatibility with Ubuntu 24.04 (deb package)
+    - Fixed the "Save file" dialog showing empty boxes instead of text: the deb uses the GTK of the system, which can draw the default variable font (Ubuntu Sans)
+    - The deb installs the AppArmor profile that Ubuntu 24.04 requires, so the Chromium sandbox stays enabled
+    - Audio, microphone and camera work on the deb without connecting any snap plug
+- Updated Rendering Engine from Chrome version: 124 to 156 (Electron 30 to 45)
+- Updated electron-builder from 24 to 26
+- Security: the window that loads web.whatsapp.com no longer has Node.js access
+    - nodeIntegration disabled, contextIsolation and sandbox enabled
+    - removed preload.js (it failed on load and did nothing)
+- User agent is now taken from the bundled Chromium instead of a fixed Chrome 124 string
+- External links are detected by hostname instead of searching for text inside the URL
+- The window is now linked to its launcher on the dock (desktopName)
+- Not changed: the snap still builds on the old base; use the deb on Ubuntu 22.04 / 24.04
+
 ## [1.2.0] - 2024-4-30
 - Big update
 - Updated Rendering Engine from Chrome version: 121 to 124
@@ -72,8 +92,8 @@ Visit [Apt Mirror](https://mirror.himelrana.com)  and install using debian nativ
 ### Development
 
 ``` shell script
-node version: v20.12.2
-electron version: ^30.0.1
+node version: v20.20.2
+electron version: ^45.3.0
 
 ```
 
@@ -88,6 +108,18 @@ npm start
 npm install
 npm run dist
 ```
+
+### Deb package for Ubuntu 22.04 / 24.04
+
+Versions 1.3.x are not published on the Snap Store or the apt mirror above (both still serve 1.2.0). Build and install the deb from this branch:
+
+```shell script
+npm install
+npx electron-builder --linux deb
+sudo apt install ./dist/whatsapp-linux-app_1.3.1_amd64.deb
+```
+
+Tested on Ubuntu 24.04. If the snap is installed, remove it afterwards with `sudo snap remove whatsapp-linux-app`; the deb keeps its own session, so the device has to be linked again.
 
 ## License
 
