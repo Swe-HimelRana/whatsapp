@@ -1,8 +1,9 @@
 {
   "name": "whatsapp-linux-app",
-  "version": "1.2.0",
+  "version": "1.3.1",
   "description": "An Unofficial desktop app for Whatsapp",
   "main": "main.js",
+  "desktopName": "whatsapp-linux-app.desktop",
   "homepage": "https://apps.himelrana.com/whatsapp",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -17,18 +18,22 @@
       "buildResources": "."
     },
     "files": [
-      "*",
-      "node_modules/**/*",
-      "package.json",
-      "icon.png"
+      "main.js",
+      "package.json"
     ],
     "linux": {
       "target": [
         "snap",
         "deb"
       ],
-      "icon": "./icon.png",
-      "category": "Network;TextTools;Office;GTK;GNOME"
+      "icon": "./icons",
+      "category": "Network;TextTools;Office;GTK;GNOME",
+      "syncDesktopName": true,
+      "desktop": {
+        "entry": {
+          "Name": "WhatsApp"
+        }
+      }
     },
     "snap": {
       "confinement": "strict",
@@ -50,7 +55,7 @@
       ]
     },
     "deb": {
-      "icon": "./icon.png",
+      "icon": "./icons",
       "category": "Network;TextTools;Office;GTK;GNOME"
     }
   },
@@ -64,7 +69,7 @@
     "electron-context-menu": "^3.6.1"
   },
   "devDependencies": {
-    "electron": "^30.0.1",
-    "electron-builder": "^24.13.3"
+    "electron": "^45.3.0",
+    "electron-builder": "^26.18.0"
   }
 }

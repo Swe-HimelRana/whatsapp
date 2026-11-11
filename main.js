@@ -1,5 +1,4 @@
-const { app, BrowserWindow, ipcMain, shell, ipcRenderer } = require('electron');
-const path = require('path');
+const { app, BrowserWindow, shell } = require('electron');
 const contextMenu = require('electron-context-menu');
 
 
@@ -12,25 +11,21 @@ function createWindow() {
     autoHideMenuBar: true,
     frame: true,
     webPreferences: {
-      nodeIntegration: true,
-      webviewTag: true,
-      nodeIntegrationInSubFrames: true,
-      preload: path.join(__dirname, 'preload.js'),
+      // The window only renders remote content (web.whatsapp.com), so it must
+      // not get Node.js access.
+      nodeIntegration: false,
+      contextIsolation: true,
+      sandbox: true,
     },
   });
 
-  mainWindow.loadURL('https://web.whatsapp.com', {userAgent: 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36'});
+  mainWindow.loadURL('https://web.whatsapp.com');
 
   mainWindow.on('closed', function () {
     mainWindow = null;
   });
 
-  mainWindow.webContents.once('did-finish-load', () => {
-    // Check notification permission when the window is ready
-    checkNotificationPermission();
-    setupExternalLinkHandling();
-    sendNotification();
-  });
+  setupExternalLinkHandling();
 }
 
 function setupExternalLinkHandling() {
@@ -40,26 +35,27 @@ function setupExternalLinkHandling() {
       shell.openExternal(url);
       return { action: 'deny' };
     }
+    return { action: 'allow' };
   });
 }
 
 function isExternalLink(url) {
-  // Check if the URL is from web.whatsapp.com or its subdomains
-  const whatsappDomains = ['whatsapp.com', 'web.whatsapp.com', /* Add more if needed */];
-  return !whatsappDomains.some(domain => url.includes(domain));
+  // Anything that is not whatsapp.com or one of its subdomains is external
+  try {
+    const { protocol, hostname } = new URL(url);
+    if (protocol === 'blob:' || protocol === 'about:') return false;
+    if (protocol !== 'https:') return true;
+    return !(hostname === 'whatsapp.com' || hostname.endsWith('.whatsapp.com'));
+  } catch {
+    return true;
+  }
 }
 
-function checkNotificationPermission() {
-  // Implement notification permission logic here if needed
-}
-
-function sendNotification() {
-  // Send an IPC message to show a notification
-  mainWindow.webContents.send('show-notification', {
-    title: 'Whatsapp Notification',
-    body: 'Whatsapp notified you',
-  });
-}
+// WhatsApp Web rejects unknown browsers: present the bundled Chromium version
+// without the Electron and app tokens, so the string never goes stale.
+app.userAgentFallback = app.userAgentFallback
+  .replace(/ Electron\/\S+/, '')
+  .replace(new RegExp(` ${app.getName()}/\\S+`), '');
 
 // Enable context menus
 app.whenReady().then(() => {
